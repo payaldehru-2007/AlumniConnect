@@ -1,0 +1,14 @@
+{
+  "name": "alumniconnect",
+  "version": "1.0.0",
+  "description": "Alumni Management System",
+  "scripts": {
+    "start": "concurrently \"npm run backend\" \"npm run python\" \"npm run frontend\"",
+    "backend": "node alumni-backend/server.js",
+    "frontend": "cd alumni-frontend && npm start",
+    "python": "cd deep-search-service/deep-search-service-main && set PYTHONIOENCODING=utf-8 && uvicorn main:app --reload --port 8000"
+  },
+  "dependencies": {
+    "concurrently": "^8.0.0"
+  }
+}
