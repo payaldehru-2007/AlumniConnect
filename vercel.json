@@ -1,35 +1,11 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "alumni-backend/api/**/*.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/auth/login",
-      "dest": "alumni-backend/api/auth/login.js"
-    },
-    {
-      "src": "/auth/register",
-      "dest": "alumni-backend/api/auth/register.js"
-    },
-    {
-      "src": "/auth/students",
-      "dest": "alumni-backend/api/auth/students.js"
-    },
-    {
-      "src": "/alumni/([^/]+)",
-      "dest": "alumni-backend/api/alumni/[id].js"
-    },
-    {
-      "src": "/alumni",
-      "dest": "alumni-backend/api/alumni/index.js"
-    },
-    {
-      "src": "/",
-      "dest": "alumni-backend/api/alumni/index.js"
-    }
+  "rewrites": [
+    { "source": "/auth/login", "destination": "/alumni-backend/api/auth/login" },
+    { "source": "/auth/register", "destination": "/alumni-backend/api/auth/register" },
+    { "source": "/auth/students", "destination": "/alumni-backend/api/auth/students" },
+    { "source": "/alumni/:id", "destination": "/alumni-backend/api/alumni/[id]" },
+    { "source": "/alumni", "destination": "/alumni-backend/api/alumni/index" },
+    { "source": "/", "destination": "/alumni-backend/api/alumni/index" }
   ]
 }
