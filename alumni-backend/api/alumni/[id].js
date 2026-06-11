@@ -7,27 +7,42 @@ const supabase = createClient(
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
+  const { id } = req.query;
+
   if (req.method === 'GET') {
     const { data, error } = await supabase
       .from('alumni')
-      .select('*');
+      .select('*')
+      .eq('id', id)
+      .single();
 
-    if (error) return res.status(400).json({ message: error.message });
+    if (error) return res.status(404).json({ message: 'Alumni not found' });
     return res.json({ alumni: data });
   }
 
-  if (req.method === 'POST') {
+  if (req.method === 'PUT') {
     const { data, error } = await supabase
       .from('alumni')
-      .insert([req.body]);
+      .update(req.body)
+      .eq('id', id);
 
     if (error) return res.status(400).json({ message: error.message });
-    return res.json({ message: 'Alumni added!', alumni: data });
+    return res.json({ message: 'Alumni updated!' });
+  }
+
+  if (req.method === 'DELETE') {
+    const { error } = await supabase
+      .from('alumni')
+      .delete()
+      .eq('id', id);
+
+    if (error) return res.status(400).json({ message: error.message });
+    return res.json({ message: 'Alumni deleted!' });
   }
 
   res.status(405).json({ message: 'Method not allowed' });

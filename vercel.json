@@ -2,14 +2,34 @@
   "version": 2,
   "builds": [
     {
-      "src": "alumni-backend/index.js",
+      "src": "alumni-backend/api/**/*.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "alumni-backend/index.js"
+      "src": "/auth/login",
+      "dest": "alumni-backend/api/auth/login.js"
+    },
+    {
+      "src": "/auth/register",
+      "dest": "alumni-backend/api/auth/register.js"
+    },
+    {
+      "src": "/auth/students",
+      "dest": "alumni-backend/api/auth/students.js"
+    },
+    {
+      "src": "/alumni/([^/]+)",
+      "dest": "alumni-backend/api/alumni/[id].js"
+    },
+    {
+      "src": "/alumni",
+      "dest": "alumni-backend/api/alumni/index.js"
+    },
+    {
+      "src": "/",
+      "dest": "alumni-backend/api/alumni/index.js"
     }
   ]
 }
