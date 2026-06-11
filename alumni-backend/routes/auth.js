@@ -25,7 +25,7 @@ router.post('/login', async (req, res) => {
 
   const token = jwt.sign(
     { id: data.id, role: data.role },
-    process.env.JWT_SECRET,
+   'alumniconnect_secret_2026',
     { expiresIn: '1d' }
   );
 
