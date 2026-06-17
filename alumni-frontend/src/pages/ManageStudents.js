@@ -11,7 +11,7 @@ const ManageStudents = () => {
   useEffect(() => { loadStudents(); }, []);
 
   const loadStudents = () => {
-    fetch('https://alumni-connect-1e46.vercel.app/api/auth/students', { headers: { Authorization: `Bearer ${token}` } })
+    fetch('http://localhost:3000/auth/students', { headers: { Authorization: `Bearer ${token}` } })
       .then(r => r.json())
       .then(data => setStudents(Array.isArray(data) ? data : []))
       .catch(() => {});
@@ -19,7 +19,7 @@ const ManageStudents = () => {
 
   const handleAdd = async () => {
     if (!form.full_name || !form.username || !form.password) { setMessage('Please fill all fields'); return; }
-    const res = await fetch('https://alumni-connect-1e46.vercel.app/api/auth/register', {
+    const res = await fetch('http://localhost:3000/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({ name: form.full_name, username: form.username, password: form.password, role: 'student' })

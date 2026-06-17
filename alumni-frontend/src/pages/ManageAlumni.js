@@ -11,14 +11,14 @@ const ManageAlumni = () => {
   useEffect(() => { loadAlumni(); }, []);
 
   const loadAlumni = () => {
-    fetch('https://alumni-connect-1e46.vercel.app/api/alumni', { headers: { Authorization: `Bearer ${token}` } })
+    fetch('http://localhost:3000/alumni', { headers: { Authorization: `Bearer ${token}` } })
       .then(r => r.json())
-      .then(data => setAlumni(data.alumni || []))
+      .then(data => setAlumni(Array.isArray(data) ? data : data.alumni || []))
       .catch(() => {});
   };
 
   const handleAdd = async () => {
-    const res = await fetch('https://alumni-connect-1e46.vercel.app/api/alumni', {
+    const res = await fetch('http://localhost:3000/alumni', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify(form)
@@ -29,7 +29,7 @@ const ManageAlumni = () => {
   };
 
   const handleDelete = async (id) => {
-    await fetch(`https://alumni-connect-1e46.vercel.app/api/alumni/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+    await fetch(`http://localhost:3000/alumni/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
     loadAlumni();
   };
 

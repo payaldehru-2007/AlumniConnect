@@ -5,7 +5,7 @@
   "scripts": {
     "start": "concurrently \"npm run backend\" \"npm run python\" \"npm run frontend\"",
   "backend": "cd alumni-backend && node server.js",
-    "frontend": "cd alumni-frontend && npx react-scripts start",
+    "frontend": "cd alumni-frontend && set PORT=3001 && npx react-scripts start",
 "python": "cd deep-search-service/deep-search-service-main && set PYTHONIOENCODING=utf-8 && python -m uvicorn main:app --reload --port 8000"
   },
   "dependencies": {

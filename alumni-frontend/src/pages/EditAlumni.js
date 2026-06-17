@@ -9,7 +9,7 @@ const EditAlumni = () => {
   const token = localStorage.getItem('token');
 
   const handleSave = async () => {
-    const res = await fetch(`https://alumni-connect-1e46.vercel.app/api/alumni/${form.id}`, {
+    const res = await fetch(`http://localhost:3000/alumni/${form.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify(form)

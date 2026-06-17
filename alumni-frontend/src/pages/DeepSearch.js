@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
 const DeepSearch = () => {
   const [filters, setFilters] = useState({ name:'', batch:'', branch:'', city:'', company:'' });
@@ -10,6 +11,9 @@ const DeepSearch = () => {
   const [searched, setSearched] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+  handleSearch();
+  }, []);
   const handleSearch = async () => {
     setLoading(true);
     const params = new URLSearchParams();
@@ -39,7 +43,7 @@ const DeepSearch = () => {
     <div style={styles.container}>
       <div style={styles.header}>
         <h2 style={styles.title}>🔍 Deep Search</h2>
-        <button style={styles.backBtn} onClick={() => navigate('/admin')}>← Back</button>
+        <button style={styles.backBtn} onClick={() => navigate('/alumni-dashboard')}>← Back</button>
       </div>
       <div style={styles.searchBox}>
         <div style={styles.grid}>
