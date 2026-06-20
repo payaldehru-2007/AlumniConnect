@@ -18,7 +18,7 @@ function App() {
       <Routes>
         {/* Common */}
         <Route path="/" element={<StudentLogin />} />
-
+<Route path="/signup" element={<StudentSignup />} />
         {/* Admin Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<Dashboard />} />
