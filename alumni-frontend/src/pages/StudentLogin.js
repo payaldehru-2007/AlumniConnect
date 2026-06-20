@@ -54,9 +54,14 @@ function StudentLogin() {
         <button style={styles.button} onClick={handleLogin}>
           Sign In as {mode === 'alumni' ? 'Alumni' : 'Admin'}
         </button>
-        <p style={styles.note}>
-          {mode === 'alumni' ? 'Your account is created by your college admin' : ''}
-        </p>
+       {mode === 'alumni' && (
+          <p style={styles.note}>
+            Don't have an account?{' '}
+            <span style={{textDecoration:'underline', cursor:'pointer'}} onClick={() => window.location.href = '/signup'}>
+              Sign up
+            </span>
+          </p>
+        )}
       </div>
     </div>
   );
