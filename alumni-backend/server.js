@@ -8,7 +8,7 @@ const authRoutes = require('./routes/auth');
 const app = express();
 
 app.use(cors({
-  origin: ['https://alumniconnect-pi.vercel.app', 'http://localhost:3001'],
+  origin: ['https://alumniconnect-fixed-swl8.vercel.app', 'http://localhost:3001'],
   credentials: true
 }));
 app.use(express.json());
