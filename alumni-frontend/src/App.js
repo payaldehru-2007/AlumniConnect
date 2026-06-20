@@ -11,7 +11,7 @@ import AlumniDashboard from './pages/AlumniDashboard';
 import MyProfile from './pages/MyProfile';
 import BrowseAlumni from './pages/BrowseAlumni';
 import DeepSearch from './pages/DeepSearch';
-
+import StudentSignup from './pages/StudentSignup';
 function App() {
   return (
     <Router>
