@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(
@@ -14,14 +13,27 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
 
-  const { username, password, name, role } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const { username, password, name } = req.body;
 
-  const { data, error } = await supabase
+  if (!username || !password || !name) {
+    return res.status(400).json({ message: 'Name, username and password are required' });
+  }
+
+  const { data: existing } = await supabase
     .from('users')
-    .insert([{ username, password: hashedPassword, name, role }]);
+    .select('id')
+    .eq('username', username)
+    .single();
+
+  if (existing) {
+    return res.status(400).json({ message: 'Username already taken' });
+  }
+
+  const { error } = await supabase
+    .from('users')
+    .insert([{ username, password, name, role: 'student' }]);
 
   if (error) return res.status(400).json({ message: error.message });
 
-  res.json({ message: 'User created successfully' });
+  res.json({ message: 'Account created successfully' });
 };
