@@ -9,11 +9,13 @@ function BrowseAlumni() {
 
   const loadAlumni = async () => {
     setLoading(true);
-    const params = new URLSearchParams();
-    Object.entries(filters).forEach(([k,v]) => { if(v) params.append(k,v); });
-    const res = await fetch(`http://localhost:8000/alumni/filter?${params}`);
+    const res = await fetch('https://alumniconnect-fixed-swl8.vercel.app/api/alumni');
     const data = await res.json();
-    setAlumni(data.alumni || []);
+    let list = data.alumni || [];
+    Object.entries(filters).forEach(([k, v]) => {
+      if (v) list = list.filter(a => (a[k] || '').toLowerCase().includes(v.toLowerCase()));
+    });
+    setAlumni(list);
     setLoading(false);
   };
 
