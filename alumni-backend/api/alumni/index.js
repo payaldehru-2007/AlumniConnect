@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    const { data, error } = await supabase.from('alumni').insert([req.body]);
+   const { data, error } = await supabase.from('alumni').insert([req.body]).select();
     if (error) return res.status(400).json({ message: error.message });
     return res.json({ message: 'Alumni added!', alumni: data });
   }
