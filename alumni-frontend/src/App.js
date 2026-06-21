@@ -25,7 +25,7 @@ function App() {
         <Route path="/admin/alumni" element={<ManageAlumni />} />
         <Route path="/admin/alumni/edit/:id" element={<EditAlumni />} />
         <Route path="/admin/alumni/profile/:id" element={<AlumniProfile />} />
-        <Route path="/admin/students" element={<ManageStudents />} />
+       <Route path="/admin/search" element={<DeepSearch />} />
 
         {/* Alumni Routes */}
         <Route path="/alumni-dashboard" element={<AlumniDashboard />} />
