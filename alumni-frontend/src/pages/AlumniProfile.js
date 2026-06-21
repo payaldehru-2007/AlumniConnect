@@ -5,23 +5,13 @@ import { useParams } from 'react-router-dom';
 function AlumniProfile() {
   const { id } = useParams();
   const [alumni, setAlumni] = useState(null);
-  const [profiles, setProfiles] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const alumniRes = await axios.get(`https://alumniconnect-fixed-swl8.vercel.app/api/alumni/${id}`);
-        setAlumni(alumniRes.data);
-        const searchRes = await axios.get(`http://localhost:8000/discover`, {
-          params: {
-            name: alumniRes.data.name,
-            batch: alumniRes.data.batch,
-            branch: alumniRes.data.branch,
-            college: 'your college name here'
-          }
-        });
-        setProfiles(searchRes.data.profiles);
+        const res = await axios.get(`https://alumniconnect-fixed-swl8.vercel.app/api/alumni/${id}`);
+        setAlumni(res.data.alumni || res.data);
       } catch (err) {
         console.error(err);
       } finally {
@@ -31,76 +21,67 @@ function AlumniProfile() {
     fetchData();
   }, [id]);
 
-  if (loading) return <div style={styles.loading}>Searching profiles... ⏳</div>;
+  if (loading) return <div style={styles.loading}>Loading profile...</div>;
   if (!alumni) return <div style={styles.loading}>Alumni not found.</div>;
 
   return (
     <div style={styles.container}>
       <div style={styles.navbar}>
         <h2 style={styles.logo}>AlumniConnect</h2>
-        <a href="/admin/alumni" style={styles.backLink}>← Back to Alumni</a>
+        <a href="/browse-alumni" style={styles.backLink}>← Back</a>
       </div>
       <div style={styles.body}>
         <div style={styles.grid}>
           <div style={styles.card}>
-            <div style={styles.avatar}>{alumni.name.charAt(0).toUpperCase()}</div>
-            <h3 style={styles.name}>{alumni.name}</h3>
-            <p style={styles.role}>{alumni.job_title} at {alumni.company}</p>
+            <div style={styles.avatar}>{alumni.name ? alumni.name.charAt(0).toUpperCase() : '?'}</div>
+            <p style={styles.name}>{alumni.name}</p>
+            <p style={styles.role}>{alumni.job_title} {alumni.company ? `· ${alumni.company}` : ''}</p>
             <div style={styles.divider} />
             <div style={styles.infoSection}>
               <p style={styles.sectionTitle}>College Info</p>
-              <div style={styles.infoRow}><span style={styles.label}>Branch</span><span>{alumni.branch}</span></div>
               <div style={styles.infoRow}><span style={styles.label}>Batch</span><span>{alumni.batch}</span></div>
-              <div style={styles.infoRow}><span style={styles.label}>Roll No</span><span>{alumni.roll_number}</span></div>
+              <div style={styles.infoRow}><span style={styles.label}>Branch</span><span>{alumni.branch}</span></div>
+              <div style={styles.infoRow}><span style={styles.label}>Roll No.</span><span>{alumni.roll_number}</span></div>
             </div>
-            <div style={styles.divider} />
             <div style={styles.infoSection}>
-              <p style={styles.sectionTitle}>Current Info</p>
-              <div style={styles.infoRow}><span style={styles.label}>Company</span><span>{alumni.company}</span></div>
-              <div style={styles.infoRow}><span style={styles.label}>Role</span><span>{alumni.job_title}</span></div>
+              <p style={styles.sectionTitle}>Contact</p>
+              <div style={styles.infoRow}><span style={styles.label}>Email</span><span>{alumni.email}</span></div>
+              <div style={styles.infoRow}><span style={styles.label}>Phone</span><span>{alumni.phone}</span></div>
               <div style={styles.infoRow}><span style={styles.label}>City</span><span>{alumni.city}</span></div>
             </div>
           </div>
           <div style={styles.card}>
-            <h3 style={styles.sectionTitle}>🔍 Deep Search Results</h3>
-            <p style={styles.subtitle}>Profiles found online for {alumni.name}</p>
-            {profiles ? (
-              <div style={styles.profileList}>
-                <div style={styles.profileCard}>
-                  <div style={{...styles.platformIcon, background: '#0077B5'}}>in</div>
-                  <div style={styles.profileInfo}>
-                    <p style={styles.platformName}>LinkedIn</p>
-                    {profiles.linkedin?.found ? (
-                      <a href={profiles.linkedin.link} target="_blank" rel="noreferrer" style={styles.profileLink}>{profiles.linkedin.link}</a>
-                    ) : (<p style={styles.notFound}>Not found</p>)}
-                  </div>
-                  <span style={profiles.linkedin?.found ? styles.activeTag : styles.notFoundTag}>{profiles.linkedin?.found ? 'Found' : 'Not found'}</span>
-                </div>
-                <div style={styles.profileCard}>
-                  <div style={{...styles.platformIcon, background: '#333'}}>GH</div>
-                  <div style={styles.profileInfo}>
-                    <p style={styles.platformName}>GitHub</p>
-                    {profiles.github?.found ? (
-                      <a href={profiles.github.link} target="_blank" rel="noreferrer" style={styles.profileLink}>{profiles.github.link}</a>
-                    ) : (<p style={styles.notFound}>Not found</p>)}
-                  </div>
-                  <span style={profiles.github?.found ? styles.activeTag : styles.notFoundTag}>{profiles.github?.found ? 'Found' : 'Not found'}</span>
-                </div>
-                <div style={styles.profileCard}>
-                  <div style={{...styles.platformIcon, background: '#1DA1F2'}}>X</div>
-                  <div style={styles.profileInfo}>
-                    <p style={styles.platformName}>Twitter / X</p>
-                    {profiles.twitter?.found ? (
-                      <a href={profiles.twitter.link} target="_blank" rel="noreferrer" style={styles.profileLink}>{profiles.twitter.link}</a>
-                    ) : (<p style={styles.notFound}>Not found</p>)}
-                  </div>
-                  <span style={profiles.twitter?.found ? styles.activeTag : styles.notFoundTag}>{profiles.twitter?.found ? 'Found' : 'Not found'}</span>
+            <p style={styles.sectionTitle}>Online Presence</p>
+            <p style={styles.subtitle}>Profile discovery requires the deep search service, which is not currently deployed.</p>
+            <div style={styles.profileList}>
+              <div style={styles.profileCard}>
+                <div style={{...styles.platformIcon, background: '#0077B5'}}>in</div>
+                <div style={styles.profileInfo}>
+                  <p style={styles.platformName}>LinkedIn</p>
+                  {alumni.linkedin_url ? (
+                    <a href={alumni.linkedin_url} target="_blank" rel="noreferrer" style={styles.profileLink}>{alumni.linkedin_url}</a>
+                  ) : (<p style={styles.notFound}>Not provided</p>)}
                 </div>
               </div>
-            ) : (
-              <p style={styles.notFound}>Could not fetch profiles. Make sure deep search service is running.</p>
-            )}
-            <p style={styles.poweredBy}>Powered by Python Deep Search · SerpAPI</p>
+              <div style={styles.profileCard}>
+                <div style={{...styles.platformIcon, background: '#333'}}>GH</div>
+                <div style={styles.profileInfo}>
+                  <p style={styles.platformName}>GitHub</p>
+                  {alumni.github_url ? (
+                    <a href={alumni.github_url} target="_blank" rel="noreferrer" style={styles.profileLink}>{alumni.github_url}</a>
+                  ) : (<p style={styles.notFound}>Not provided</p>)}
+                </div>
+              </div>
+              <div style={styles.profileCard}>
+                <div style={{...styles.platformIcon, background: '#1DA1F2'}}>X</div>
+                <div style={styles.profileInfo}>
+                  <p style={styles.platformName}>Twitter / X</p>
+                  {alumni.twitter_handle ? (
+                    <p style={styles.profileLink}>{alumni.twitter_handle}</p>
+                  ) : (<p style={styles.notFound}>Not provided</p>)}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -132,9 +113,6 @@ const styles = {
   profileInfo: { flex: 1 },
   profileLink: { fontSize: '11px', color: '#2E6DA4', wordBreak: 'break-all' },
   notFound: { fontSize: '11px', color: '#aaa', margin: 0 },
-  activeTag: { fontSize: '10px', padding: '3px 8px', borderRadius: '6px', background: '#E6F9EE', color: '#27AE60', flexShrink: 0 },
-  notFoundTag: { fontSize: '10px', padding: '3px 8px', borderRadius: '6px', background: '#f5f5f5', color: '#aaa', flexShrink: 0 },
-  poweredBy: { margin: '1rem 0 0', fontSize: '10px', color: '#ccc', textAlign: 'right' },
   loading: { display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '16px', color: '#1A3C6E' }
 };
 
