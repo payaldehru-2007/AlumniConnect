@@ -13,8 +13,9 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
 
-  const { username, password, name } = req.body;
-
+let { username, password, name } = req.body;
+username = (username || '').trim();
+name = (name || '').trim();
   if (!username || !password || !name) {
     return res.status(400).json({ message: 'Name, username and password are required' });
   }
